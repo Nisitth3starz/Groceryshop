@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Store page</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/store.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Josefin+Sans:wght@200&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+</head>
+
+<body>
+<div th:replace="/fragment/navigation :: navigation"></div>
+
+<div class="container-fluid d-flex flex-wrap" style="background-color: #0f8569;">
+	<div class="col-md-6 d-flex justify-content-center align-items-center">
+		<h2 class="text-white fcontact">Store</h2>
+	</div>
+	<div class="col-md-6">
+		<img class="img-fluid"
+			 src="https://cdn.discordapp.com/attachments/870174645725331496/1229300777906999366/image.png?ex=662f2e90&is=661cb990&hm=508416e9db1084c0dfbe036d50d8b73a273bfc8865b0c1c697d2028f62954315&"
+			 alt="marketplace">
+	</div>
+</div>
+
+<!--Table-->
+	<div class="container-fluid mb-5">
+		<div class="row mt-3">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+							เพื่มสินค้า
+						</button>
+
+						<!-- Modal -->
+						<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5">Model เพื่มสินค้า</h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+									<form th:action="@{/product/addproduct}" method="post" enctype="multipart/form-data">
+
+										<div class="modal-body">
+
+												<div class="form-floating mb-3">
+													<input type="text" class="form-control" name="name" id="floatingInput" placeholder="ชื่อสินค้า" required>
+													<label for="floatingInput">ชื่อสินค้า</label>
+												  </div>
+
+												  <div class="form-floating mb-3">
+													<input type="number" class="form-control" name="price" id="price" placeholder="ราคาสินค้า" required>
+													<label for="price">ราคาสินค้า</label>
+												  </div>
+
+												<div class="form-floating mb-3">
+													<input type="number" class="form-control" name="stock" id="stock" placeholder="จำนวนสินค้าในคลัง" required>
+													<label for="stock">จำนวนสินค้าในคลัง</label>
+												</div>
+
+											  <div class="form-floating mb-3 " hidden>
+												<input type="number"   class="form-control" name="quantity" id="quantity" th:value="1">
+												<label for="quantity">จำนวนสินค้า</label>
+											  </div>
+
+
+										  	<div class="input-group mb-3">
+												<label class="input-group-text" for="inputGroupFile01">Upload</label>
+												<input type="file" class="form-control" name="image" id="inputGroupFile01">
+											</div>
+
+										</div>
+
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+											<button type="submit" class="btn btn-primary">บันทึกสินค้า</button>
+										</div>
+									
+									</form>
+							</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="card-body">
+						<table id="example" class="table table-striped" style="width:100%">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">ภาพสินค้า</th>
+									<th scope="col">ชื่อสินค้า</th>
+									<th scope="col">ราคาสินค้า</th>
+									<th scope="col">จำนวนสินค้า</th>
+									<th class="text-center">
+										จัดการสินค้า
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each=" p : ${products} ">
+									<td th:text="${p.id}"></td>
+									<td><img th:src="@{'/images/products/' + ${p.image}}" width="50" height="50"/></td>
+									<td th:text="${p.name}"></td>
+									<td th:text="${p.price}"></td>
+									<td th:text="${p.stock}"></td>
+									<td class="text-center">
+
+										<button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" th:attr="data-bs-target='#id' + ${p.id}">
+											<i class="fa fa-edit"></i>
+										</button>
+										<a th:href="@{/product/deleteProduct/{id}(id = ${p.id})}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+									</td>
+
+									<!-- Modal -->
+									<div class="modal fade" th:id="'id' + ${p.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="staticBackdropLabel">แก้ไขสินค้า</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+												<form th:action="@{/product/updateProduct}" method="post" enctype="multipart/form-data" th:object="${product}">
+
+													<div class="modal-body">
+
+														<div class="group">
+														</div>
+
+														<input type="text" hidden name="id" th:value="${p.id}">
+
+														<div class="form-floating mb-3">
+															<input type="text" class="form-control" name="name"  th:value="${p.name}">
+															<label>ชื่อสินค้า</label>
+														</div>
+
+														<div class="form-floating mb-3">
+															<input type="number" class="form-control" name="price" th:value="${p.price}">
+															<label>ราคาสินค้า</label>
+														</div>
+
+														<div class="form-floating mb-3">
+															<input type="number" class="form-control" name="stock"  th:value="${p.stock}">
+															<label>จำนวนสินค้า</label>
+														</div>
+
+
+														<div class="input-group mb-3">
+															<label class="input-group-text" for="inputGroupFile01">Upload</label>
+																<input type="file" class="form-control" name="newImage">
+																<input type="text" hidden class="form-control" name="image" th:value="${p.image}">
+															</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+														<button type="submit" class="btn btn-primary">บันทึกสินค้า</button>
+													</div>
+												
+												</form>
+										</div>
+										</div>
+									</div>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--Table-->
+
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+	<!-- bootstrap5 -->
+	<script src="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"crossorigin="anonymous"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+	<script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+
+	<script>
+		new DataTable('#example',{
+			scrollX: true,
+			scrollY: 450,
+			info: false,
+			ordering: false,
+			// paging: false
+		});
+	</script>
+</body>
+
+</html>

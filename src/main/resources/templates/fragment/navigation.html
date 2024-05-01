@@ -1,0 +1,40 @@
+
+<html lang="en">
+<head>
+    
+</head>
+<body>
+    <div th:fragment="navigation">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <header class="d-flex flex-wrap justify-content-center py-3 navitems">
+            <!-- svg image -->
+            <a href="/"class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <img width="80"src="https://cdn.discordapp.com/attachments/870174645725331496/1229133757496164432/image.png?ex=662e9303&is=661c1e03&hm=73a33e958e3b2fdb0d0863228c542f9e6652633af6e894c56185857d0e572782&"alt="person"/>
+                <span class="fs-4 text-white">Nisith Nichapun</span>
+            </a>
+            <ul class="nav nav-pills">
+
+                <li class="nav-item">
+                    <a href="/cart"class="nav-link bg-light text-dark m-2 rounded-pill">
+                        <i class="fas fa-cart-plus fa-fw fa-xl"></i><span th:text="${count}" style="font-size: 14px;"></span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/"class="nav-link bg-light text-dark m-2 rounded-pill"aria-current="page">สินค้า</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/product/store" class="nav-link bg-light text-dark m-2 rounded-pill">คลังสินค้า</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/shopdetail" class="nav-link bg-light text-dark m-2 rounded-pill">รายงานการขายสินค้า</a>
+                </li>
+
+            </ul>
+        </header>
+    </div>
+</body>
+</html>
